@@ -39,38 +39,37 @@ pragma solidity 0.8.18;
        to the amount that is supposed to be burned.
 */
 
-contract MyToken {
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
 
-    // public variables here
+contract CustomToken {
 
-    string public tokenName="META";
-    string public tokenAbbrv="Mta";
+    string public tokenName;
+    string public tokenSymbol;
+    uint256 public totalSupply;
 
-    uint public totalSupply = 0;
-    
-    // mapping variable here
+    mapping(address => uint256) public balances;
 
-    mapping(address => uint )public balances;
-
-    // mint function
-
-    function mint (address _address,uint _value) public 
-    {
-        totalSupply += _value;
-        balances[_address] += _value;
+    constructor(string memory _name, string memory _symbol) {
+        tokenName = _name;
+        tokenSymbol = _symbol;
+        totalSupply = 0;
     }
 
-    // burn function
-     function burn (address _address,uint _value) public 
-    {
-        if(balances[_address] >= _value)
-        {
-        totalSupply -= _value;
-        balances[_address] -= _value;
-        }
+    function generateTokens(address account, uint256 amount) public {
+        require(account != address(0), "Invalid address");
+        totalSupply += amount;
+        balances[account] += amount;
     }
 
+    function eraseTokens(address account, uint256 amount) public {
+        require(account != address(0), "Invalid address");
+        require(balances[account] >= amount, "Insufficient balance");
+        totalSupply -= amount;
+        balances[account] -= amount;
+    }
 }
+
 ```
 
 To compile the code, click on the "Solidity Compiler" tab in the left-hand sidebar. Make sure the "Compiler" option is set to "0.8.18" (or another compatible version), and then click on the "Compile Test.sol" button.
@@ -89,7 +88,7 @@ pragma solidity ^0.8.18
 ## Authors
 
   
-[Chirag ]
+[Pratham Sharma ]
 
 
 ## License
